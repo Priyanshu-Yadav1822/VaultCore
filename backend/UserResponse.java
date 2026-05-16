@@ -1,0 +1,24 @@
+package com.vaultcore.backend.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+
+/** Full user profile returned by GET /api/users/me and admin endpoints */
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
+public class UserResponse {
+    private Long    id;
+    private String  fullName;
+    private String  initials;
+    private String  username;
+    private String  accountLast4;
+    private Double  currentBalance;
+    private Double  savingsBalance;
+    private Integer creditScore;
+    private String  role;
+    private Boolean active;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastLoginAt;
+}
