@@ -1,4 +1,4 @@
-package com.vaultcore.backend.dto;
+package com.java_bank.backend.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
