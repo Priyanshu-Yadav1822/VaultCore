@@ -1,4 +1,4 @@
-package com.vaultcore.backend.dto;
+package com.java_bank.backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
