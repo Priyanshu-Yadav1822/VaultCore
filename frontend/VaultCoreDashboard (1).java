@@ -14,11 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * VaultCore – Futuristic ATM Dashboard
+ * Java_bank – Futuristic ATM Dashboard
  * Pure JavaFX | setStyle() only | No CSS / FXML / DB
  * All buttons functional | User creation | No NEFT/POS entries
  */
-public class VaultCoreDashboard extends Application {
+public class Java_bankDashboard extends Application {
 
     // ── Palette ────────────────────────────────────────────────
     private static final String BG_DARK      = "#050d1a";
@@ -93,7 +93,7 @@ public class VaultCoreDashboard extends Application {
         fadeIn.setFromValue(0); fadeIn.setToValue(1); fadeIn.play();
 
         Scene scene = new Scene(root, 1280, 780);
-        stage.setTitle("VaultCore — Cyber Banking Interface");
+        stage.setTitle("Java_bank — Cyber Banking Interface");
         stage.setScene(scene);
         stage.setMinWidth(1100);
         stage.setMinHeight(680);
@@ -116,7 +116,7 @@ public class VaultCoreDashboard extends Application {
         glow.setSpread(0.15);
         header.setEffect(glow);
 
-        Label logo = new Label("⬡ VaultCore");
+        Label logo = new Label("⬡ Java_bank");
         logo.setStyle("-fx-font-size: 26px; -fx-font-weight: bold; -fx-font-family: 'Courier New'; -fx-text-fill: " + NEON_GREEN + ";");
         applyGlowLabel(logo, NEON_GREEN, 14);
 
@@ -495,22 +495,26 @@ public class VaultCoreDashboard extends Application {
     private ScrollPane buildCreateUserPanel() {
         VBox panel = panelBase("👤 Create New User", "Register a new banking account holder.", NEON_GREEN);
 
-        TextField nameField    = styledField("Full name (e.g. Priya Mehta)");
-        TextField acctField    = styledField("Last 4 digits of account number");
-        TextField balField     = styledField("Initial current balance (₹)");
-        TextField savField     = styledField("Initial savings balance (₹)");
+        TextField     nameField = styledField("Full name (e.g. Priya Mehta)");
+        TextField     acctField = styledField("Last 4 digits of account number");
+        PasswordField pinField  = styledPinField("Set 4–6 digit PIN");
+        TextField     balField  = styledField("Initial current balance (₹)");
+        TextField     savField  = styledField("Initial savings balance (₹)");
         Label msgLabel = alertLabel("");
 
         Button createBtn = buildActionButton("👤", "Create User", NEON_GREEN);
         createBtn.setOnAction(e -> {
             String name    = nameField.getText().trim();
             String acctNum = acctField.getText().trim();
+            String pin     = pinField.getText().trim();
             String balStr  = balField.getText().trim();
             String savStr  = savField.getText().trim();
 
-            if (name.isEmpty())         { setAlert(msgLabel, "⚠ Enter full name.", ACCENT_GOLD); return; }
-            if (acctNum.length() < 1)   { setAlert(msgLabel, "⚠ Enter account last 4 digits.", ACCENT_GOLD); return; }
-            if (balStr.isEmpty())       { setAlert(msgLabel, "⚠ Enter initial balance.", ACCENT_GOLD); return; }
+            if (name.isEmpty())                        { setAlert(msgLabel, "⚠ Enter full name.", ACCENT_GOLD); return; }
+            if (acctNum.length() < 1)                  { setAlert(msgLabel, "⚠ Enter account last 4 digits.", ACCENT_GOLD); return; }
+            if (pin.length() < 4 || pin.length() > 6) { setAlert(msgLabel, "⚠ PIN must be 4–6 digits.", ACCENT_GOLD); return; }
+            if (!pin.matches("^[0-9]+$"))              { setAlert(msgLabel, "⚠ PIN must be numeric.", ACCENT_GOLD); return; }
+            if (balStr.isEmpty())                      { setAlert(msgLabel, "⚠ Enter initial balance.", ACCENT_GOLD); return; }
             double bal, sav = 0;
             try { bal = Double.parseDouble(balStr); } catch (Exception ex) { setAlert(msgLabel, "⚠ Invalid balance.", ACCENT_GOLD); return; }
             try { if (!savStr.isEmpty()) sav = Double.parseDouble(savStr); } catch (Exception ex) { sav = 0; }
@@ -524,15 +528,16 @@ public class VaultCoreDashboard extends Application {
             BankUser newUser = new BankUser(name, initials, "••••  ••••  " + last4, bal, sav, 750);
             users.add(newUser);
             setAlert(msgLabel, "✅ User \"" + name + "\" created successfully!", NEON_GREEN);
-            nameField.clear(); acctField.clear(); balField.clear(); savField.clear();
+            nameField.clear(); acctField.clear(); pinField.clear(); balField.clear(); savField.clear();
 
             // Refresh list below
             handleNavigation("Create User");
         });
 
         panel.getChildren().addAll(
-            fieldLabel("FULL NAME"),                  nameField,
+            fieldLabel("FULL NAME"),                   nameField,
             fieldLabel("ACCOUNT NO. (LAST 4 DIGITS)"), acctField,
+            fieldLabel("SET PIN (4–6 DIGITS)"),  pinField,
             fieldLabel("INITIAL CURRENT BALANCE (₹)"), balField,
             fieldLabel("INITIAL SAVINGS BALANCE (₹)"), savField,
             createBtn, msgLabel
