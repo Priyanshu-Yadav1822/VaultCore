@@ -1,6 +1,6 @@
-package com.vaultcore.backend.dto;
+package com.java_bank.backend.dto;
 
-import com.vaultcore.backend.entity.Transaction;
+import com.java_bank.backend.entity.Transaction;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
