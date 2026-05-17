@@ -18,11 +18,11 @@ public class TransferRequest {
     @DecimalMin(value = "1.0", message = "Minimum transfer is ₹1")
     private Double amount;
 
-    /** UPI_TRANSFER, NEFT_TRANSFER, or IMPS_TRANSFER */
-    @NotBlank(message = "Transfer mode is required")
-    @Pattern(regexp = "UPI_TRANSFER|NEFT_TRANSFER|IMPS_TRANSFER",
-             message = "mode must be UPI_TRANSFER, NEFT_TRANSFER, or IMPS_TRANSFER")
-    private String mode;
+    /**
+     * UPI_TRANSFER, NEFT_TRANSFER, or IMPS_TRANSFER.
+     * Optional — defaults to UPI_TRANSFER if not provided by the frontend.
+     */
+    private String mode = "UPI_TRANSFER";
 
     @NotBlank(message = "PIN is required")
     private String pin;
